@@ -1,0 +1,22 @@
+:root {
+    --main-color:#A23E22;
+    --gray:#696969;
+}
+
+body {
+    margin:0;
+    padding:0;
+}
+
+.row {
+    margin: 0 !important;
+}
+
+.navbar {
+    box-shadow: 1px 1px 0.3em var(--gray);
+    z-index: 1;
+}
+
+main {
+    z-index: 0;
+}
