@@ -3,3 +3,59 @@
     width:100%;
     z-index: 0;
 }
+
+.primary-school {
+    background-color: #790c4b;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.secondary-school {
+    background-color: #ff20a2;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.irrigation {
+    background-color: #0d42d3;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.village {
+    background-color: #d3af61;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.trading-center {
+    background-color: #128383;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.water-point {
+    background-color: #00a3d2;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.settlement-scheme {
+    background-color: #117e54;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.hospital {
+    background-color: #db2912;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}

@@ -1,3 +1,8 @@
+// data panes
+var pointDataPane = map.createPane("points");
+var lineDataPane = map.createPane("lines");
+var polygonDataPane = map.createPane("polygons");
+
 // ===================== TILED DATA ===============================================
 // constituency
 // road section
@@ -9,7 +14,8 @@ var riverNzoia = L.geoJSON(null, {
             color:"#138496",
             weight:3
         };
-    }
+    },
+    pane:"lines"
 });
 
 riverNzoia.addTo(map);
@@ -29,21 +35,22 @@ fetch('/line_data')
 
 // ===================== POLYGON DATA ===============================================
 // basin
-var basin = L.geoJSON(null, {
+var riverBasin = L.geoJSON(null, {
     style:function(feature) {
         return {
-
+            fillColor:"#ff0000",
+            weight:0
         }
     }
 });
 
-basin.addTo(map);
+riverBasin.addTo(map);
 
 // lake
 var lakeVictoria = L.geoJSON(null, {
     style:function(feature) {
         return {
-
+            weight:0
         }
     }
 });
@@ -53,30 +60,32 @@ lakeVictoria.addTo(map);
 // load the data from db
 fetch("/polygon_data")
 .then(response => {
-
+    return response.json();
 })
 .then(polygonData => {
-    let [basin, lake] = JSON.parse(polygonData);
-    basin.addData(data);
-    lakeVictoria.addData(lake);
+    console.log(polygonData);
+    let {basin, lake} = polygonData;
+
+    riverBasin.addData(JSON.parse(basin));
+    lakeVictoria.addData(JSON.parse(lake));
 })
 .catch(error => {
-    console.log(data);
+    console.log(error);
 });
 
 
 // ===================== POINT DATA ===============================================
 
 // Hospitals
-var hospitalIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var hospitalIcon = L.icon({
+    iconUrl:'/static/images/hospital.png',
+    iconSize:[25, 25]
 });
 
 var hospitals = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:hospitalIcon
         });
     }
 });
@@ -84,30 +93,28 @@ var hospitals = L.geoJSON(null, {
 hospitals.addTo(map);
 
 // Schools
-var primarySchoolIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var primarySchoolIcon = L.divIcon({
+    className:"primary-school"
 });
 
 var primarySchools = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:primarySchoolIcon
         });
     }
 });
 
 primarySchools.addTo(map);
 
-var secondarySchoolIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var secondarySchoolIcon = L.divIcon({
+    className:'secondary-school'
 });
 
 var secondarySchools = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:secondarySchoolIcon
         });
     }
 });
@@ -115,15 +122,14 @@ var secondarySchools = L.geoJSON(null, {
 secondarySchools.addTo(map);
 
 // Irrigation Schemes
-var irrigationSchemeIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var irrigationSchemeIcon = L.divIcon({
+    className:"irrigation"
 });
 
 var irrigationSchemes = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:irrigationSchemeIcon
         });
     }
 });
@@ -131,15 +137,14 @@ var irrigationSchemes = L.geoJSON(null, {
 irrigationSchemes.addTo(map);
 
 // Villages
-var villageIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var villageIcon = L.divIcon({
+    className:"village"
 });
 
 var villages = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:villageIcon
         });
     }
 });
@@ -147,15 +152,14 @@ var villages = L.geoJSON(null, {
 villages.addTo(map);
 
 // trading centres
-var tradingCentreIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var tradingCentreIcon = L.divIcon({
+    className:"trading-center"
 });
 
 var tradingCentres = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:tradingCentreIcon
         });
     }
 });
@@ -163,15 +167,14 @@ var tradingCentres = L.geoJSON(null, {
 tradingCentres.addTo(map);
 
 // waterpoints
-var waterPointIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var waterPointIcon = L.divIcon({
+    className:"water-point"
 });
 
 var waterPoints = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:waterPointIcon
         });
     }
 });
@@ -179,15 +182,14 @@ var waterPoints = L.geoJSON(null, {
 waterPoints.addTo(map);
 
 // settlement schemes
-var settlementSchemeIcon = L.Icon({
-    iconUrl:'',
-    iconSize:''
+var settlementSchemeIcon = L.divIcon({
+    className:"settlement-scheme"
 });
 
 var settlementSchemes = L.geoJSON(null, {
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
-
+            icon:settlementSchemeIcon
         });
     }
 });
@@ -200,23 +202,25 @@ fetch('/point_data')
     return response.json();
 })
 .then(pointData => {
-    console.log(pointData);
-    let [hospital, primary, secondary, irrigation, 
-        village, trading, waterPoint, settlement] = JSON.parse(pointData);
+    // console.log(pointData);
+    let {hospital, primary, secondary, irrigation, 
+        village, trading, waterPoint, settlement} = pointData;
 
     // update the layers
-    hospitals.addData(hospital);
-    primarySchools.addData(primary);
-    secondarySchools.addData(secondary);
-    irrigationSchemes.addData(irrigation);
-    villages.addData(village);
-    trading.addData(trading);
-    waterPoints.addData(waterPoint);
-    settlement.addData(settlement);
+    hospitals.addData(JSON.parse(hospital));
+    primarySchools.addData(JSON.parse(primary));
+    secondarySchools.addData(JSON.parse(secondary));
+    irrigationSchemes.addData(JSON.parse(irrigation));
+    villages.addData(JSON.parse(village));
+    tradingCentres.addData(JSON.parse(trading));
+    waterPoints.addData(JSON.parse(waterPoint));
+    settlementSchemes.addData(JSON.parse(settlement));
 
 })
 .catch(error => {
     console.log(error);
 });
 
+
+// layer groups
 
