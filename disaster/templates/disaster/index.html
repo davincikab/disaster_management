@@ -11,6 +11,9 @@
     <div class="col-md-2">
         <div class="row">
             <h5>Map Layers</h5>
+            <div class="list">
+
+            </div>
         </div>
         <div class="row">
             <h5>Legend</h5>
@@ -23,7 +26,9 @@
 {% endblock %}
 
 {% block javascript %}
+    <script src="{% static 'js/turf.min.js' %}"></script>
     <script src="{% static 'leaflet/leaflet.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/loadData.js' %}"></script>
+    <script src="{% static 'js/queryClosestFeatures.js' %}"></script>
 {% endblock %}

@@ -12,4 +12,8 @@ var cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x
 }).addTo(map);
 
 
-// control
+map.on('click', function(e) {
+    console.log(e);
+});
+
+

@@ -4,6 +4,11 @@
     z-index: 0;
 }
 
+.row  h5 {
+    font-size: 1em;
+    color: #121221;
+}
+
 .primary-school {
     background-color: #790c4b;
     height: 30px;
@@ -58,4 +63,9 @@
     height: 30px;
     width: 30px;
     border-radius: 50%;
+}
+
+.popup-item {
+    display: flex;
+    justify-content: space-between;
 }

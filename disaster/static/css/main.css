@@ -15,6 +15,7 @@ body {
 .navbar {
     box-shadow: 1px 1px 0.3em var(--gray);
     z-index: 1;
+    width: 100%;
 }
 
 main {

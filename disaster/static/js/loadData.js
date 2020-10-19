@@ -224,3 +224,39 @@ fetch('/point_data')
 
 // layer groups
 
+// closest Feature Object
+let myLocationIcon = L.icon({
+    iconUrl:'/static/images/start.png',
+    iconSize:[30, 70],
+    popupAnchor:[-3, -30]
+});
+
+let destinationIcon = L.icon({
+    iconUrl:'/static/images/stop.png',
+    iconSize:[30, 70],
+    popupAnchor:[-3, -30]    
+});
+
+var closestCamp = L.geoJSON(null, {
+    style:{
+
+    },
+    onEachFeature:function(feature, layer) {
+        if(feature.properties.distance) {
+            layer.bindPopup("<h6><strong>" + feature.properties.f_name + "</strong></h6><p class='popup-item'><strong>Distance</strong>"+feature.properties.distance +" Km</p>");
+        } else {
+            layer.bindPopup("<p class='popup-item'><strong>My Location</strong></p>");
+        }
+        
+    },
+    pointToLayer:function(geoObj, latLng) {
+        console.log(geoObj);
+        if(geoObj.properties.distance) {
+            return L.marker(latLng, {icon:destinationIcon});
+        }
+
+        return L.marker(latLng, {icon:myLocationIcon});
+    }
+});
+
+closestCamp.addTo(map);
