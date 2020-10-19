@@ -21,3 +21,8 @@ body {
 main {
     z-index: 0;
 }
+
+/* utils class */
+.btn-circle {
+    border-radius: 50%;
+}

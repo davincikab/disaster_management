@@ -23,6 +23,21 @@
        
     </div>
 </div>
+
+<!-- prompt modal: geolocation -->
+<div class="modal" tabindex="-1" id="geolocate-prompt">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>Set my Location</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="dismiss-location">Cancel</button>
+          <button type="button" class="btn btn-sm btn-primary" id="confirm-location">Set as My Location</button>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascript %}

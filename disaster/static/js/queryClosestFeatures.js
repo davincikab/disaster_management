@@ -11,9 +11,7 @@ function findNearestCamp(point, geoObj) {
     });
 }
 
-let point = turf.point([ 34.051121, 0.099242]);
-
-function findCamp() {
+function findCamp(point) {
     findNearestCamp(point, hospitals)
     .then(response => response)
     .then(data => {
