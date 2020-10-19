@@ -6,6 +6,8 @@ function findNearestCamp(point, geoObj) {
     let fc = turf.featureCollection(camps.features);
     console.log(fc);
 
+    // Camp should not be in the flood zone
+
     return new Promise((resolve, reject) => {
         resolve(turf.nearestPoint(point, fc))
     });
@@ -21,6 +23,9 @@ function findCamp(point) {
 
         data.properties.distance = distance.toFixed(3);
         closestCamp.addData(turf.featureCollection([data, point]));
+
+        // fit bounds
+        map.fitBOunds(closestCamp.getBounds());
 
         // toggle popup
         closestCamp.eachLayer(layer => layer.togglePopup());

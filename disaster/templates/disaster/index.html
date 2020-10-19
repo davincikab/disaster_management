@@ -10,13 +10,61 @@
 <div class="row">
     <div class="col-md-2">
         <div class="row">
-            <h5>Map Layers</h5>
-            <div class="list">
+            <h5 class="section-title">Analysis</h5>
+            <div class="px-2">
+                <button class="btn btn-sm btn-primary mt-2" id="nearest-camp">Nearest Camp</button>
+                <button class="btn btn-sm btn-primary mt-2" id="affected-feature">Get Affected Features</button>
+            </div>
 
+            <div class="list w-100" >
+                <h5 class="section-title">Analysis Results</h5>
+                <div class="px-2" id="feature-description">
+                </div>
             </div>
         </div>
         <div class="row">
-            <h5>Legend</h5>
+            <h5 class="section-title">Legend</h5>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="hospital py-1 px-1 mx-2"></div>
+                    <span>Hospitals</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="primary-school py-1 px-1 mx-2"></div>
+                    <span>Primary Schools</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="secondary-school py-1 px-1 mx-2"></div>
+                    <span>Secondary School</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="irrigation py-1 px-1 mx-2"></div>
+                    <span>Irrigation</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="village py-1 px-1 mx-2"></div>
+                    <span>Village</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="water-point py-1 px-1 mx-2"></div>
+                    <span>Waterpoint </span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="trading-center py-1 px-1 mx-2"></div>
+                    <span>Trading Centre</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="settlement-scheme py-1 px-1 mx-2"></div>
+                    <span>Settlement Scheme</span>
+                </div>
+            </div>
         </div>
     </div> 
     <div class="col-md-10" id="map">
@@ -38,6 +86,34 @@
       </div>
     </div>
 </div>
+
+<!-- Choose the  -->
+<div class="modal" tabindex="-1" id="affected-areas-prompt">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+            <form action="" id="affected-areas-form">
+                <label for="feature">Select a Feature</label>
+                <select class="custom-select custom-select-sm" name="feature" id="featue">
+                    <option value="Hospitals">Hospitals</option>
+                    <option selected value="Primary Schools">Primary Schools</option>
+                    <option value="Secondary Schools">Secondary Schools</option>
+                    <option value="Trading Centres">Trading Centres</option>
+                    <option value="Water Points">Water Points</option>
+                    <option value="Villages">Villages</option>
+                    <option value="Irrigation Schemes">Irrigation Schemes</option>
+                </select>
+
+                <div class="d-flex my-2">
+                    <button type="submit" class="btn btn-sm btn-primary" id="confirm-location">Submit</button>
+                    <button type="button" class="btn btn-sm btn-danger mx-2" data-dismiss="modal" id="dismiss-location">Cancel</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block javascript %}
@@ -46,4 +122,5 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/loadData.js' %}"></script>
     <script src="{% static 'js/queryClosestFeatures.js' %}"></script>
+    <script src="{% static 'js/pointInPolygonAnalysis.js' %}"></script>
 {% endblock %}

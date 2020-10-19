@@ -46,6 +46,17 @@ var riverBasin = L.geoJSON(null, {
 
 riverBasin.addTo(map);
 
+var floodedAreas = L.geoJSON(null, {
+   style:function(e) {
+       return {
+           fillColor:"#1ce6ed",
+           weight:0
+       }
+   } 
+});
+
+floodedAreas.addTo(map);
+
 // lake
 var lakeVictoria = L.geoJSON(null, {
     style:function(feature) {
@@ -68,6 +79,8 @@ fetch("/polygon_data")
 
     riverBasin.addData(JSON.parse(basin));
     lakeVictoria.addData(JSON.parse(lake));
+
+    riverBasin.bringToBack();
 })
 .catch(error => {
     console.log(error);
@@ -221,8 +234,29 @@ fetch('/point_data')
     console.log(error);
 });
 
+// load floadarea
+fetch("/static/data/floodedarea.geojson")
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+    floodedAreas.addData(data);
+})
+.catch(error => {
+    console.error(error);
+});
 
 // layer groups
+var overlays = {
+    'Hospitals':hospitals,
+    'Primary Schools':primarySchools,
+    'Secondary Schools': secondarySchools,
+    'Trading Centres':tradingCentres,
+    'Water Points':waterPoints,
+    'Villages':villages,
+    'Irrigation Schemes':irrigationSchemes,
+};
+
+L.control.layers(baseLayer, overlays).addTo(map);
 
 // closest Feature Object
 let myLocationIcon = L.icon({
@@ -243,9 +277,9 @@ var closestCamp = L.geoJSON(null, {
     },
     onEachFeature:function(feature, layer) {
         if(feature.properties.distance) {
-            layer.bindPopup("<h6><strong>" + feature.properties.f_name + "</strong></h6><p class='popup-item'><strong>Distance</strong>"+feature.properties.distance +" Km</p>");
+            layer.bindPopup("<h6><strong>" + feature.properties.f_name + "</strong></h6><p class='popup-item'><strong>Distance</strong>"+feature.properties.distance +" Km</p>").openPopup();
         } else {
-            layer.bindPopup("<p class='popup-item'><strong>My Location</strong></p>");
+            layer.bindPopup("<p class='popup-item'><strong>My Location</strong></p>").openPopup();
         }
         
     },
@@ -260,3 +294,34 @@ var closestCamp = L.geoJSON(null, {
 });
 
 closestCamp.addTo(map);
+
+
+// Affected features
+var affectedFeatureIcon = L.icon({
+    iconUrl:'/static/images/black.png',
+    iconSize:[30, 70],
+    popupAnchor:[-3, -30]
+});
+
+var affectedFeatures = L.geoJSON(null, {
+    onEachFeature:function(feature,layer) {
+        let popupString = "";
+        let properties = feature.properties;
+
+        for (const key in properties) {
+            if (properties.hasOwnProperty(key)) {
+                const element = properties[key];
+                popupString += "<p class='popup-item'><strong>"+ key +"</strong>" + element +"</p>"
+            }
+        }
+
+        let popupContent = "<div class='popup-content'>"+ popupString +"</div>"
+        layer.bindPopup(popupContent);
+        
+    },
+    pointToLayer:function(geoObj, latlng) {
+        return L.marker(latlng, {icon:affectedFeatureIcon})
+    }
+});
+
+affectedFeatures.addTo(map);

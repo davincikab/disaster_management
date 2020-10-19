@@ -4,10 +4,33 @@
     z-index: 0;
 }
 
-.row  h5 {
+.row h5, .section-title {
     font-size: 1em;
-    color: #121221;
+    color: var(--white);
+    width: 100%;
+    background-color: darkcyan;
+    padding: 6px 4px;
+    margin: 0.25rem 0;
 }
+
+.col-md-2 {
+    padding:0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-top: 0.25em;
+}
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin-top: 0;
+}
+
+/* Custom markers */
 
 .primary-school {
     background-color: #790c4b;
@@ -65,12 +88,36 @@
     border-radius: 50%;
 }
 
-.popup-item {
+.leaflet-popup-content-wrapper {
+    border-radius: 6px !important;
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+    margin:4px
+}
+
+.popup-content {
+    width: 200px;
+    height: 200px;
+    overflow: auto;
+    padding: 3px 0px;
+}
+
+.popup-content .popup-item {
     display: flex;
     justify-content: space-between;
+    margin:8px 0;
+}
+
+.popup-item strong {
+    text-transform: capitalize;
 }
 
 .btn-geo {
     background-color: white;
     padding: 7px 12px;
+}
+
+.leaflet-marker-icon:focus {
+    outline: none;
 }
