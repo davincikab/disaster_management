@@ -1,3 +1,4 @@
+var spinner = $('#spinner');
 var map = L.map('map', {
     center: [0.099242, 34.051121],
     zoom: 13,
@@ -15,6 +16,12 @@ var cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x
 var allCampsData;
 var campsIcon =  L.icon({
     iconUrl:'/static/images/black.png',
+    iconSize:[30, 70],
+    popupAnchor:[-3, -30]
+});
+
+var inActiveCampIcon = L.icon({
+    iconUrl:'/static/images/start.png',
     iconSize:[30, 70],
     popupAnchor:[-3, -30]
 });
@@ -42,6 +49,9 @@ var camps = L.geoJson(null, {
         // });
     },
     pointToLayer:function(geoObj, latlng){
+        if(!geoObj.properties.is_active) {
+            return L.marker(latlng, {icon:inActiveCampIcon})
+        }
         return L.marker(latlng, {icon:campsIcon})
     }
 });
@@ -60,6 +70,7 @@ function fetchCamp() {
 
         allCampsData = campsData;
         createCardList(allCampsData);
+        spinner.addClass("d-none");
     })
     .catch(error => {
         console.error(error);
@@ -117,6 +128,7 @@ var dData;
 
 campsCreateUpdateForm.on('submit', function(e) {
     e.preventDefault();
+    spinner.addClass("d-none");
     dData = new FormData(formElement);
 
     // add form data
@@ -154,13 +166,16 @@ campsCreateUpdateForm.on('submit', function(e) {
            actionText.text('Add a Camp');
            formElement.reset();
            campsCreateUpdateForm.attr('data-key', "");
+           spinner.removeClass("d-none");
        } else {
         // 
         console.log(res);
+        spinner.removeClass("d-none");
        }
     })
     .catch(error => {
         console.error(error);
+        spinner.removeClass("d-none");
     });
 
 });
@@ -206,6 +221,7 @@ function deleteCamp(camp_id) {
 }
 
 confirmDeleteButton.on('click', function(e){
+    spinner.removeClass("d-none");
     // get the id
     let camp_id = confirmDeleteButton.attr('data-key');
 
@@ -219,8 +235,11 @@ confirmDeleteButton.on('click', function(e){
         console.log(res);
         deleteModal.modal('hide');
         fetchCamp();
+
+        spinner.addClass("d-none");
     }).catch(error => {
         console.error(error);
+        spinner.addClass("d-none");
     });
 
 });

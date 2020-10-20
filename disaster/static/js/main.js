@@ -9,6 +9,7 @@ var isgeolocateByMapClick = false;
 var geolocateModal = $('#geolocate-prompt');
 var confirmUserLocationButton = $('#confirm-location');
 var dismissUserLocationButton = $('#dismiss-location');
+var spinner = $("#spinner");
 
 // nearest feature
 var nearestCamp = $('#nearest-camp');
@@ -129,4 +130,7 @@ affectedFeatureForm.on("submit", function(e) {
     let feature = overlays[value];
     console.log(feature);
     findAffectedInfrastucture(feature, value); 
+    closestCamp.clearLayers();
 });
+
+// map reset Control

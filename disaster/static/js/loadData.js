@@ -209,6 +209,23 @@ var settlementSchemes = L.geoJSON(null, {
 
 settlementSchemes.addTo(map);
 
+// camps
+var campIcon = L.icon({
+    iconUrl:'/static/images/camping.png',
+    iconSize:[30, 45],
+    popupAnchor:[-3, -30]
+});
+
+var camps = L.geoJSON(null, {
+    pointToLayer:function(geoObj, latLng) {
+        return L.marker(latLng, {
+            icon:campIcon
+        });
+    }
+});
+
+camps.addTo(map);
+
 // Point Data
 fetch('/point_data')
 .then(response => {
@@ -217,7 +234,7 @@ fetch('/point_data')
 .then(pointData => {
     // console.log(pointData);
     let {hospital, primary, secondary, irrigation, 
-        village, trading, waterPoint, settlement} = pointData;
+        village, trading, waterPoint, settlement, camp} = pointData;
 
     // update the layers
     hospitals.addData(JSON.parse(hospital));
@@ -228,7 +245,9 @@ fetch('/point_data')
     tradingCentres.addData(JSON.parse(trading));
     waterPoints.addData(JSON.parse(waterPoint));
     settlementSchemes.addData(JSON.parse(settlement));
+    camps.addData(JSON.parse(camp));
 
+    spinner.addClass("d-none");
 })
 .catch(error => {
     console.log(error);
@@ -254,6 +273,8 @@ var overlays = {
     'Water Points':waterPoints,
     'Villages':villages,
     'Irrigation Schemes':irrigationSchemes,
+    'Settlement Scheme': settlementSchemes,
+    'Camps':camps
 };
 
 L.control.layers(baseLayer, overlays).addTo(map);
@@ -277,7 +298,7 @@ var closestCamp = L.geoJSON(null, {
     },
     onEachFeature:function(feature, layer) {
         if(feature.properties.distance) {
-            layer.bindPopup("<h6><strong>" + feature.properties.f_name + "</strong></h6><p class='popup-item'><strong>Distance</strong>"+feature.properties.distance +" Km</p>").openPopup();
+            layer.bindPopup("<h6 class='px-3'><strong>" + feature.properties.name + "</strong></h6><p class='popup-item'><strong>Distance</strong>"+feature.properties.distance +" Km</p>").openPopup();
         } else {
             layer.bindPopup("<p class='popup-item'><strong>My Location</strong></p>").openPopup();
         }

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 # serializer
 from django.core.serializers import serialize
@@ -27,8 +28,14 @@ def get_point_data(request):
     trading = serialize("geojson", Tradingcentres.objects.all())
     waterPoint = serialize("geojson", Waterpoints.objects.all())
     settlement = serialize("geojson", Settlementschemes.objects.all())
+    camps = serialize("geojson", Camps.objects.all())
 
-    context = {'hospital':hospital, 'primary':primary, 'secondary':secondary, 'irrigation':irrigation, 'village':village, 'trading':trading, 'waterPoint':waterPoint, 'settlement':settlement}
+
+    context = {
+        'hospital':hospital, 'primary':primary, 'secondary':secondary, 'irrigation':irrigation, 
+        'village':village, 'trading':trading, 'waterPoint':waterPoint, 'settlement':settlement,
+        'camp':camps
+    }
     return HttpResponse(json.dumps(context))
 
 # read line data
@@ -36,22 +43,22 @@ def get_line_data(request):
     river = serialize("geojson", Rivernzoia.objects.all())
     return HttpResponse(river)
 
+# read polygon data
 def get_polygon_data(request):
     basin = serialize("geojson", Basin.objects.all())
     lake = serialize("geojson", Lakevictoria.objects.all())
 
     context = {'basin':basin, 'lake':lake}
     return HttpResponse(json.dumps(context))
-# read polygon data
 
 
+@login_required(login_url='/user/login/')
 def camps(request):
     form = CreateCampForm()
     return render(request, 'disaster/camps.html', {'form':form})
 
 
 # Camps CRUD
-@csrf_exempt
 def create_update_camp(request):
     print("Creating")
     if request.method == 'POST':

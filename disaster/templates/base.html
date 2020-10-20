@@ -32,14 +32,11 @@
                     <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Report</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'disaster:camps'%}" tabindex="-1" aria-disabled="true">Camps</a>
-                </li>
-                <!-- {% if user.is_authenticated %} -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Add Camps</a>
-                </li>
-                <!-- {% endif %} -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'disaster:camps'%}" tabindex="-1" aria-disabled="true">Camps</a>
+                    </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav"> 
                 {% if user.is_authenticated %}
@@ -47,11 +44,11 @@
                         <a class="nav-link" href="/admin" tabindex="-1" aria-disabled="true">Admin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Logout</a>
+                        <a class="nav-link" href="/user/logout/" tabindex="-1" aria-disabled="true">Logout</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Login</a>
+                        <a class="nav-link" href="/user/login/" tabindex="-1" aria-disabled="true">Login</a>
                     </li>
                 {% endif %}
             </ul>          
@@ -64,7 +61,16 @@
     </main>
 
     <!-- spinner -->
-    <!-- snackbar -->
+    <div class="snackbar"></div>
+
+     <!-- snackbar -->
+    <div class="spinner" id="spinner">
+        <div class="spinner-backdrop text-center">
+            <i class="fa fa-spinner"></i>
+            <p class="spinner-status">Processing your Request ....</p>
+        </div>
+    </div>
+
 
     <script src="{% static '/js/jquery.js' %}"></script>
     <script src="{% static '/bootstrap/js/bootstrap.js' %}"></script>

@@ -8,6 +8,10 @@
     padding: 0;
 }
 
+.custom-switch {
+    padding: 1rem 2.25rem !important;
+}
+
 .modal-dialog {
     display: flex;
     align-items: center;

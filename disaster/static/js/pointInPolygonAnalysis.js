@@ -11,6 +11,7 @@ function findAffectedFeatures(features) {
 }
 
 function findAffectedInfrastucture(features, featureType) {
+   spinner.removeClass("d-none");
    findAffectedFeatures(features)
     .then(response => response)
     .then(data => {
@@ -18,11 +19,24 @@ function findAffectedInfrastucture(features, featureType) {
 
         affectedFeatures.clearLayers();
         affectedFeatures.addData(data);
+        
+        if(data.features.length > 1) {
+            map.fitBounds(affectedFeatures.getBounds());
+        }
 
         let affectedFeaturesString = data.features.length + " " + featureType + " affected by floods"
         $("#feature-description").text(affectedFeaturesString);
+
+        setTimeout(function(e){
+            spinner.addClass("d-none");
+        }, 100);
+        
     })
     .catch(error => {
         console.error(error);
+
+        setTimeout(function(e){
+            spinner.addClass("d-none");
+        }, 100);
     });
 }

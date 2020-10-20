@@ -15,7 +15,8 @@ function findNearestCamp(point, geoObj) {
 }
 
 function findCamp(point) {
-    findNearestCamp(point, hospitals)
+    spinner.removeClass("d-none");
+    findNearestCamp(point, camps)
     .then(response => response)
     .then(data => {
         console.log(data);
@@ -23,15 +24,27 @@ function findCamp(point) {
         let distance = turf.distance(point, data);
 
         data.properties.distance = distance.toFixed(3);
-        closestCamp.addData(turf.featureCollection([data, point]));
+        
+        let fc = turf.featureCollection([point, data]);
+        closestCamp.addData(fc);
 
         // fit bounds
-        map.fitBOunds(closestCamp.getBounds());
+        if(fc.features.length > 1) {
+            map.fitBounds(closestCamp.getBounds());
+        }
 
         // toggle popup
         closestCamp.eachLayer(layer => layer.togglePopup());
+
+        setTimeout(function(e){
+            spinner.addClass("d-none");
+        }, 100);
     })
     .catch(error => {
         console.error(error);
+
+        setTimeout(function(e){
+            spinner.addClass("d-none");
+        }, 100);
     });
 }
