@@ -22,13 +22,6 @@
     align-items: center;
     margin-top: 0.25em;
 }
-.modal-dialog {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin-top: 0;
-}
 
 /* Custom markers */
 

@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # serializer
 from django.core.serializers import serialize
+from django.contrib.gis.geos import GEOSGeometry
 
 # models 
 from .models import *
+from .forms import CreateCampForm
 
 # util
 import json
@@ -40,3 +43,55 @@ def get_polygon_data(request):
     context = {'basin':basin, 'lake':lake}
     return HttpResponse(json.dumps(context))
 # read polygon data
+
+
+def camps(request):
+    form = CreateCampForm()
+    return render(request, 'disaster/camps.html', {'form':form})
+
+
+# Camps CRUD
+@csrf_exempt
+def create_update_camp(request):
+    print("Creating")
+    if request.method == 'POST':
+        print("Recieved Request")
+        print(request.POST)
+        if request.POST.get('camp_id'):
+            try:
+                updateCamp = Camps.objects.get(id = request.POST.get('camp_id'))
+                form = CreateCampForm(request.POST or None, request.FILES, instance=updateCamp)
+            except Camps.DoesNotExist:
+                return HttpResponse(json.dumps({'message':'Error: No camp with such Id'}))
+        else:
+            print("Createing Form")
+            form = CreateCampForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            print("Valid")
+            geom = request.POST.get('geom')
+            camp = form.save(commit=False)
+            camp.geom = GEOSGeometry(f'POINT ({geom})')
+            camp.save()
+            return HttpResponse(json.dumps({'message':'success'}))
+        else:
+            print("Invalid Form Data")
+            return HttpResponse(json.dumps({'error':form.errors}))
+
+    else:
+        return HttpResponse(json.dumps({'message':'404 Error'}))
+
+def get_camps(request):
+    camps = serialize("geojson", Camps.objects.all())
+    return HttpResponse(camps)
+
+@csrf_exempt
+def delete_camp(request, camp_id):
+    print(camp_id)
+    if request.method == "DELETE":
+        try:
+            camp = Camps.objects.get(id = camp_id)
+            camp.delete()
+            return HttpResponse(json.dumps({'message':'Delete operation Successful'}))
+        except Camps.DoesNotExist:
+            return HttpResponse(json.dumps({'message':'Error: No such camp'}))

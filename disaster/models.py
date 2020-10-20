@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from PIL import Image
 
 
 class Basin(models.Model):
@@ -244,3 +245,35 @@ class Waterpoints(models.Model):
     class Meta:
         managed = False
         db_table = 'waterpoints'
+
+
+# Camps
+class Camps(models.Model):
+    name = models.CharField("Name", max_length=50)
+    capacity = models.IntegerField("Capacity")
+    population = models.IntegerField("Population")
+    image = models.ImageField("Camp Picture", upload_to="camp_pictures",  default="ee.PNG")
+    is_active = models.BooleanField("Active Camp", default=False)
+    geom = models.PointField(blank=True, null=True)
+    commissoned = models.DateTimeField("Commision Date", auto_now=True)
+    decomissioned = models.DateTimeField("Decomission Date", blank=True, null=True)
+
+
+    class Meta:
+        verbose_name = "Camps"
+        verbose_name_plural = "Camps"
+
+    def __str__(self):
+        return self.name
+    
+    def save(self,*args, **kwargs):
+        super().save(*args, **kwargs)
+
+        size = (300, 300)
+        img = Image.open(self.image.path)
+        if img.height > 300 or img.width > 300:
+             img.thumbnail(size)
+             img.save(self.image.path)
+
+    # def get_absolute_url(self):
+    #     return reverse("Camps_detail", kwargs={"pk": self.pk})

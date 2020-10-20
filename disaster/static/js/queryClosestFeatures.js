@@ -7,6 +7,7 @@ function findNearestCamp(point, geoObj) {
     console.log(fc);
 
     // Camp should not be in the flood zone
+    
 
     return new Promise((resolve, reject) => {
         resolve(turf.nearestPoint(point, fc))
