@@ -33,13 +33,13 @@ main {
     position: fixed;
     bottom: 0%;
     left: 15vw;
-    background-color: var(--error-text);
+    background-color: var(--gray);
     color:var(--white);
     transition: all 0.3s linear;
     border-radius: 5px;
     z-index: 2;
     opacity: 0;
-    padding:2em 1em;
+    padding:.5em 1em;
 }
 
 .snackbar.open {
@@ -78,5 +78,12 @@ main {
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+
+@media (min-width:50em) {
+    .snackbar {
+        left:50%;
     }
 }

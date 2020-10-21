@@ -277,3 +277,31 @@ class Camps(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse("Camps_detail", kwargs={"pk": self.pk})
+
+# USER Location
+class UserLocation(models.Model):
+    first_name = models.CharField("First Name", max_length=50)
+    geom = models.PointField()
+    description = models.TextField("Point Description")
+    image = models.ImageField("Location Image", upload_to="user_location", blank=True)
+    reported = models.DateTimeField("Reported On", auto_now=True)
+    is_evacuated = models.BooleanField("Evacuation Status", default=False)
+    
+    def save(self,*args, **kwargs):
+        super().save(*args, **kwargs)
+
+        size = (300, 300)
+        img = Image.open(self.image.path)
+        if img.height > 300 or img.width > 300:
+             img.thumbnail(size)
+             img.save(self.image.path)
+
+    class Meta:
+        verbose_name = "UserLocation"
+        verbose_name_plural = "UserLocations"
+
+    def __str__(self):
+        return self.name
+
+    # def get_absolute_url(self):
+    #     return reverse("UserLocation_detail", kwargs={"pk": self.pk})

@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 # serializer
 from django.core.serializers import serialize
@@ -9,14 +10,15 @@ from django.contrib.gis.geos import GEOSGeometry
 
 # models 
 from .models import *
-from .forms import CreateCampForm
+from .forms import CreateCampForm, UserLocationForm
 
 # util
 import json
 
 # Create your views here.
 def home_view(reqeust):
-    return render(reqeust, "disaster/index.html")
+    form = UserLocationForm()
+    return render(reqeust, "disaster/index.html", {'form':form})
 
 # read point data
 def get_point_data(request):
@@ -102,3 +104,18 @@ def delete_camp(request, camp_id):
             return HttpResponse(json.dumps({'message':'Delete operation Successful'}))
         except Camps.DoesNotExist:
             return HttpResponse(json.dumps({'message':'Error: No such camp'}))
+
+
+# Add user Location
+@require_POST
+def report_user_location(request):
+    print(request.POST)
+    form = UserLocationForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        geom = request.POST.get('geom')
+        user_location = form.save(commit=False)
+        user_location.geom = GEOSGeometry(f'POINT ({geom})')
+        return JsonResponse({'message':"success"})
+    else:
+        JsonResponse({'message':"error"})

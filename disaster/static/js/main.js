@@ -76,7 +76,7 @@ function triggerGeolocation() {
 
 map.on("locationfound", function(e) {
     // update myLocation
-    myLocation = e;
+    myLocation = e.latlng;
 });
 
 map.on("locationerror" , function(e) {
@@ -134,3 +134,69 @@ affectedFeatureForm.on("submit", function(e) {
 });
 
 // map reset Control
+var ResetControl = new L.Control({position:'bottomleft'});
+ResetControl.onAdd = function(map) {
+    let div = L.DomUtil.create('button', 'btn');
+    div.setAttribute('id', 'reset-button');
+    div.innerHTML = "Reset";
+
+    div.addEventListener('click', function(e) {
+        // clear map Layers
+        closestCamp.clearLayers();
+        affectedFeatures.clearLayers();
+    });
+
+    return div;
+}
+
+ResetControl.addTo(map);
+
+// User Location Modal
+var userLocationModal = $("#user-location-modal");
+var toggleUserLocationButton =  $("#report-my-location");
+var userLocationFormElement = document.querySelector("#user-location-form");
+var userLocationForm = $("#user-location-form");
+
+toggleUserLocationButton.on('click', function(e) {
+    // check if myLocation id defined
+    if(myLocation) {
+        userLocationModal.modal('show');
+    } else {
+        alert('Provide user location');
+    }
+});
+
+userLocationForm.on("submit", function(e) {
+    e.preventDefault();
+    let userLocationData = new FormData(userLocationFormElement);
+
+    
+    userLocationData.append('geom', Object.values(myLocation).reverse().join(" "));
+
+    // add the geom
+    fetch('/add_user_location/', {
+        method:'POST',
+        body:userLocationData
+    })
+    .then(response => response.json())
+    .then(({message}) => {
+        console.log(message);
+        if(message == 'success') {
+            userLocationModal.modal('hide');
+            userLocationFormElement.reset();
+
+            // update snackbar message
+           snackbar.addClass('open');
+           snackbar.text("Successfully reported your location")
+        } else {
+            $('error-message').text("");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    });
+});
+
+$('#dismiss-location').on('click', function(e) {
+    userLocationFormElement.reset();
+});

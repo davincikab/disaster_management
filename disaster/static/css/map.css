@@ -32,6 +32,22 @@
 }
 
 /* Custom markers */
+.hospital-icon {
+    background-color: #790c4b;
+    padding: 2px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    color: white;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.leaflet-marker-icon.hospital-icon {
+    width: 20px !important;
+    height: 20px !important;
+}
 
 .primary-school {
     background-color: #790c4b;
@@ -69,10 +85,11 @@
 }
 
 .water-point {
-    background-color: #00a3d2;
+    color: #00a3d2;
     height: 30px;
     width: 30px;
     border-radius: 50%;
+    text-align: center;
 }
 
 .settlement-scheme {

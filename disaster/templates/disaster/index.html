@@ -27,7 +27,9 @@
             <h5 class="section-title">Legend</h5>
             <div class="legend">
                 <div class="legend-item">
-                    <div class="hospital py-1 px-1 mx-2"></div>
+                    <div class="hospital-icon py-1 px-1 mx-2">
+                        <i class="fa fa-h-square"></i>
+                    </div>
                     <span>Hospitals</span>
                 </div>
 
@@ -52,7 +54,9 @@
                 </div>
 
                 <div class="legend-item">
-                    <div class="water-point py-1 px-1 mx-2"></div>
+                    <div class="water-point py-1 px-1 mx-2">
+                        <i class="fa fa-tint fa-2x"></i>
+                    </div>
                     <span>Waterpoint </span>
                 </div>
 
@@ -110,6 +114,26 @@
                 <div class="d-flex my-2">
                     <button type="submit" class="btn btn-sm btn-primary" id="confirm-location">Submit</button>
                     <button type="button" class="btn btn-sm btn-danger mx-2" data-dismiss="modal" id="dismiss-location">Cancel</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- user location  -->
+<div class="modal" tabindex="-1" id="user-location-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+            <p class="text-center">Report My Location</p>
+            <form action="" method="post" id="user-location-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <small class="text-danger" id="error-message"></small>
+                <div class="form-group mt-2">
+                    <button type="submit" class="btn btn-sm btn-success" id="confirm-location">Submit</button>
+                    <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal" id="dismiss-location">Cancel</button>
                 </div>
             </form>
         </div>

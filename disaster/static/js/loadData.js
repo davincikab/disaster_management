@@ -90,9 +90,9 @@ fetch("/polygon_data")
 // ===================== POINT DATA ===============================================
 
 // Hospitals
-var hospitalIcon = L.icon({
-    iconUrl:'/static/images/hospital.png',
-    iconSize:[25, 25]
+var hospitalIcon = L.divIcon({
+    className:"hospital-icon",
+    html:'<i class="fa fa-h-square" ></i>'
 });
 
 var hospitals = L.geoJSON(null, {
@@ -181,7 +181,8 @@ tradingCentres.addTo(map);
 
 // waterpoints
 var waterPointIcon = L.divIcon({
-    className:"water-point"
+    className:"water-point",
+    html:'<i class="fa fa-tint text-primary"></i>'
 });
 
 var waterPoints = L.geoJSON(null, {
@@ -211,8 +212,8 @@ settlementSchemes.addTo(map);
 
 // camps
 var campIcon = L.icon({
-    iconUrl:'/static/images/camping.png',
-    iconSize:[30, 45],
+    iconUrl:'/static/images/camp_hippo.png',
+    iconSize:[30, 30],
     popupAnchor:[-3, -30]
 });
 
@@ -247,6 +248,8 @@ fetch('/point_data')
     settlementSchemes.addData(JSON.parse(settlement));
     camps.addData(JSON.parse(camp));
 
+    camps.bringToFront();
+
     spinner.addClass("d-none");
 })
 .catch(error => {
@@ -259,6 +262,7 @@ fetch("/static/data/floodedarea.geojson")
 .then(data => {
     console.log(data);
     floodedAreas.addData(data);
+
 })
 .catch(error => {
     console.error(error);
