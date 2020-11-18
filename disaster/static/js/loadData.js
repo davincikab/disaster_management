@@ -34,8 +34,39 @@ fetch('/line_data')
 });
 
 // ===================== POLYGON DATA ===============================================
+// constituency
+var constituency = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.constituen, feature, layer);   
+    },
+    style:function(feature) {
+        return {
+            fillColor:"#ff0000",
+            weight:0
+        }
+    }
+});
+
+constituency.addTo(map);
+
+var affectedConstituecy = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.constituen, feature, layer);   
+    },
+    style:function(feature) {
+        return {
+            fillColor:"#00ff00",
+            weight:0
+        }
+    }
+});
+
+affectedConstituecy.addTo(map);
 // basin
 var riverBasin = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        // createPopup(feature.properties.name, feature, layer);
+    },
     style:function(feature) {
         return {
             fillColor:"#ff0000",
@@ -96,6 +127,9 @@ var hospitalIcon = L.divIcon({
 });
 
 var hospitals = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.f_name, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:hospitalIcon
@@ -111,6 +145,9 @@ var primarySchoolIcon = L.divIcon({
 });
 
 var primarySchools = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.name_of_sc, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:primarySchoolIcon
@@ -125,6 +162,9 @@ var secondarySchoolIcon = L.divIcon({
 });
 
 var secondarySchools = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.name_of_sc, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:secondarySchoolIcon
@@ -140,6 +180,9 @@ var irrigationSchemeIcon = L.divIcon({
 });
 
 var irrigationSchemes = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.scheme_nam, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:irrigationSchemeIcon
@@ -155,6 +198,9 @@ var villageIcon = L.divIcon({
 });
 
 var villages = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.name, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:villageIcon
@@ -170,6 +216,9 @@ var tradingCentreIcon = L.divIcon({
 });
 
 var tradingCentres = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.town_name, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:tradingCentreIcon
@@ -186,6 +235,9 @@ var waterPointIcon = L.divIcon({
 });
 
 var waterPoints = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.management, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:waterPointIcon
@@ -201,6 +253,9 @@ var settlementSchemeIcon = L.divIcon({
 });
 
 var settlementSchemes = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.full_name, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:settlementSchemeIcon
@@ -218,6 +273,9 @@ var campIcon = L.icon({
 });
 
 var camps = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        createPopup(feature.properties.name, feature, layer);
+    },
     pointToLayer:function(geoObj, latLng) {
         return L.marker(latLng, {
             icon:campIcon
@@ -226,6 +284,24 @@ var camps = L.geoJSON(null, {
 });
 
 camps.addTo(map);
+
+
+// Create Popup
+function createPopup(title, feature, layer) {
+    let popupString = "";
+    let properties = feature.properties;
+
+    for (const key in properties) {
+        if (properties.hasOwnProperty(key)) {
+            const element = properties[key];
+            popupString += "<p class='popup-item'><strong>"+ key +"</strong>" + element +"</p>"
+        }
+    }
+
+    let popupTitle = "<h5>"+ title + "</h5>";
+    let popupContent = popupTitle + "<div class='popup-content'>"+  popupString +"</div>"
+    layer.bindPopup(popupContent);
+}
 
 // Point Data
 fetch('/point_data')
@@ -256,6 +332,17 @@ fetch('/point_data')
     console.log(error);
 });
 
+// load constituency data
+fetch("/static/data/constituencies.geojson")
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+    constituency.addData(data);
+})
+.catch(error => {
+    console.error(error);
+});
+
 // load floadarea
 fetch("/static/data/floodedarea.geojson")
 .then(response => response.json())
@@ -278,7 +365,9 @@ var overlays = {
     'Villages':villages,
     'Irrigation Schemes':irrigationSchemes,
     'Settlement Scheme': settlementSchemes,
-    'Camps':camps
+    'Camps':camps,
+    'Constituency':constituency,
+    'Affected Constituecy':affectedConstituecy
 };
 
 L.control.layers(baseLayer, overlays).addTo(map);

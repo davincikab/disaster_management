@@ -19,6 +19,8 @@ var affectedFeaturesButton = $("#affected-feature");
 var affectedAreaModal = $("#affected-areas-prompt");
 var affectedFeatureForm = $("#affected-areas-form");
 
+var affectedPopulation = $("#affected-population");
+
 // add a tile Layer
 var cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}' + (L.Browser.retina ? '@2x.png' : '.png'), {
     attribution:'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -41,8 +43,6 @@ map.on('click', function(e) {
     }
    
 });
-
-
 
 // Geolocation control
 var geolocationControl = new L.Control({position:'topleft'});
@@ -109,6 +109,38 @@ nearestCamp.on('click', function(e) {
     }
 }); 
 
+// affected population
+affectedPopulation.on('click', function(e) {
+    // get the constituecy affected
+    spinner.removeClass("d-none");
+    let constituen = constituency.toGeoJSON();
+
+    let basin = riverBasin.toGeoJSON();
+    basin = basin.features[0];
+
+    constituen.features = constituen.features.filter(feature => {
+        if(turf.booleanOverlap(basin, feature)) {
+            return feature;
+        }
+    });
+
+    console.log(constituen);
+
+    // Count the 
+    let count = constituen.features.map( feature =>  parseInt(feature.properties.households.replace(',', '')));
+    console.log(count);
+
+    count = count.reduce((a, b) => a + b);
+    console.log(count);
+
+    let affectedFeaturesString = count + " households have been affected by floods in " + constituen.features.length + " Constituecies";
+    $("#feature-description").text(affectedFeaturesString);
+
+    affectedConstituecy.clearLayers();
+    affectedConstituecy.addData(constituen);
+
+    spinner.addClass("d-none");
+});
 
 // Affected areas: Algo
 affectedFeaturesButton.on("click", function(e) {
