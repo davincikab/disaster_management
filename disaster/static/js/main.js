@@ -160,6 +160,15 @@ affectedFeatureForm.on("submit", function(e) {
 
     // get the the respective feature
     let feature = overlays[value];
+    if(value == "Crop Land") {
+        getAffectedArea(feature);
+        return;
+    } else if( value == "Households") {
+        getAffectedHouseHolds();
+        return;
+    }
+
+   
     console.log(feature);
     findAffectedInfrastucture(feature, value); 
     closestCamp.clearLayers();
@@ -176,12 +185,22 @@ ResetControl.onAdd = function(map) {
         // clear map Layers
         closestCamp.clearLayers();
         affectedFeatures.clearLayers();
+        affectedCropLand.clearLayers();
+        affectedHouseHolds.setLatLngs([]);
+
+        $("#feature-description").text("");
+
     });
 
     return div;
 }
 
 ResetControl.addTo(map);
+
+
+function removeAllOverlay() {
+    Object.values(overlays).forEach(ly => map.removeLayer(ly));
+}
 
 // User Location Modal
 var userLocationModal = $("#user-location-modal");
@@ -232,3 +251,7 @@ userLocationForm.on("submit", function(e) {
 $('#dismiss-location').on('click', function(e) {
     userLocationFormElement.reset();
 });
+
+// TODO:
+// Display the spinner during processing
+

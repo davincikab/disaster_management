@@ -246,6 +246,39 @@ class Waterpoints(models.Model):
         managed = False
         db_table = 'waterpoints'
 
+class Croplands(models.Model):
+    geom = models.MultiPolygonField(blank=True, null=True)
+    objectid = models.BigIntegerField(blank=True, null=True)
+    crops = models.CharField(max_length=254, blank=True, null=True)
+    main_crop = models.CharField(max_length=254, blank=True, null=True)
+    other_crop = models.CharField(max_length=254, blank=True, null=True)
+    county_nam = models.CharField(max_length=254, blank=True, null=True)
+    watering = models.CharField(max_length=254, blank=True, null=True)
+    area_km2 = models.FloatField(blank=True, null=True)
+    shape_leng = models.FloatField(blank=True, null=True)
+    shape_area = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'croplands'
+
+class Floodedarea(models.Model):
+    geom = models.MultiPolygonField(blank=True, null=True)
+    gridcode = models.BigIntegerField(blank=True, null=True)
+    area = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'floodedarea'
+    
+
+class Householdsdata(models.Model):
+    geom = models.PointField(blank=True, null=True)
+    objectid = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'householdsdata'
 
 # Camps
 class Camps(models.Model):

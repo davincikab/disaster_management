@@ -110,6 +110,8 @@
                     <option value="Irrigation Schemes">Irrigation Schemes</option>
                     <option value="Settlement Scheme">Settlement Scheme</option>
                     <option value="Camps">Camps</option>
+                    <option value="Crop Land">Cropland</option>
+                    <option value="Households">Households</option>
                 </select>
 
                 <div class="d-flex my-2">
@@ -147,6 +149,7 @@
 {% block javascript %}
     <script src="{% static 'js/turf.min.js' %}"></script>
     <script src="{% static 'leaflet/leaflet.js' %}"></script>
+    <script src="{% static 'js/leaflet-heat.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/loadData.js' %}"></script>
     <script src="{% static 'js/queryClosestFeatures.js' %}"></script>

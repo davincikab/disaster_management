@@ -49,8 +49,9 @@ def get_line_data(request):
 def get_polygon_data(request):
     basin = serialize("geojson", Basin.objects.all())
     lake = serialize("geojson", Lakevictoria.objects.all())
+    cropland = serialize("geojson", Croplands.objects.all())
 
-    context = {'basin':basin, 'lake':lake}
+    context = {'basin':basin, 'lake':lake, 'cropland':cropland}
     return HttpResponse(json.dumps(context))
 
 
@@ -119,3 +120,9 @@ def report_user_location(request):
         return JsonResponse({'message':"success"})
     else:
         JsonResponse({'message':"error"})
+
+def get_affected_households(request):
+    # 
+    flooded_geom = Floodedarea.objects.all()
+    # houses = Householdsdata.objects.get(geom__intesects=)
+    return HttpResponse(flooded_geom)

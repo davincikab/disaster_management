@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import home_view, get_line_data, get_point_data, get_polygon_data, \
-    camps, create_update_camp, delete_camp, get_camps, report_user_location
+    camps, create_update_camp, delete_camp, get_camps, report_user_location, get_affected_households
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,6 +11,7 @@ urlpatterns = [
     path("line_data/", get_line_data, name="line-data"),
     path("polygon_data/", get_polygon_data, name="polygon-data"),
     path("point_data/", get_point_data, name="point-data"),
+    path("affected_households/", get_affected_households, name="affected-households"),
     path("camps/", camps, name="camps"),
     path("get_camps/", get_camps, name="get-camps"),
     path("create_update_camp/", create_update_camp, name="create-update-camp"),

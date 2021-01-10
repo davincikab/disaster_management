@@ -62,6 +62,35 @@ var affectedConstituecy = L.geoJSON(null, {
 });
 
 affectedConstituecy.addTo(map);
+
+// cropland
+var cropLand = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        // createPopup(feature.properties.name, feature, layer);
+    },
+    style:function(feature) {
+        return {
+            fillColor:"#1cba10",
+            weight:0
+        }
+    }
+}).addTo(map);
+
+var affectedCropLand = L.geoJSON(null, {
+    onEachFeature:function(feature, layer) {
+        // createPopup(feature.properties.name, feature, layer);
+    },
+    style:function(feature) {
+        return {
+            fillColor:"#1cba10",
+            weight:0
+        }
+    }
+});
+
+// heatmapLayer
+var affectedHouseHolds = L.heatLayer([]);
+
 // basin
 var riverBasin = L.geoJSON(null, {
     onEachFeature:function(feature, layer) {
@@ -106,10 +135,11 @@ fetch("/polygon_data")
 })
 .then(polygonData => {
     console.log(polygonData);
-    let {basin, lake} = polygonData;
+    let {basin, lake, cropland} = polygonData;
 
     riverBasin.addData(JSON.parse(basin));
     lakeVictoria.addData(JSON.parse(lake));
+    cropLand.addData(JSON.parse(cropland));
 
     riverBasin.bringToBack();
 })
@@ -365,8 +395,11 @@ var overlays = {
     'Villages':villages,
     'Irrigation Schemes':irrigationSchemes,
     'Settlement Scheme': settlementSchemes,
+    'Crop Land':cropLand,
     'Camps':camps,
     'Constituency':constituency,
+    'River Basin':riverBasin,
+    'Flood Area':floodedAreas,
     'Affected Constituecy':affectedConstituecy
 };
 
