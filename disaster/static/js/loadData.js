@@ -47,7 +47,7 @@ var constituency = L.geoJSON(null, {
     }
 });
 
-constituency.addTo(map);
+// constituency.addTo(map);
 
 var affectedConstituecy = L.geoJSON(null, {
     onEachFeature:function(feature, layer) {
@@ -61,7 +61,7 @@ var affectedConstituecy = L.geoJSON(null, {
     }
 });
 
-affectedConstituecy.addTo(map);
+// affectedConstituecy.addTo(map);
 
 // cropland
 var cropLand = L.geoJSON(null, {
@@ -74,7 +74,8 @@ var cropLand = L.geoJSON(null, {
             weight:0
         }
     }
-}).addTo(map);
+})
+// .addTo(map);
 
 var affectedCropLand = L.geoJSON(null, {
     onEachFeature:function(feature, layer) {
@@ -104,7 +105,7 @@ var riverBasin = L.geoJSON(null, {
     }
 });
 
-riverBasin.addTo(map);
+// riverBasin.addTo(map);
 
 var floodedAreas = L.geoJSON(null, {
    style:function(e) {
@@ -185,7 +186,7 @@ var primarySchools = L.geoJSON(null, {
     }
 });
 
-primarySchools.addTo(map);
+// primarySchools.addTo(map);
 
 var secondarySchoolIcon = L.divIcon({
     className:'secondary-school'
@@ -202,7 +203,7 @@ var secondarySchools = L.geoJSON(null, {
     }
 });
 
-secondarySchools.addTo(map);
+// secondarySchools.addTo(map);
 
 // Irrigation Schemes
 var irrigationSchemeIcon = L.divIcon({
@@ -220,7 +221,7 @@ var irrigationSchemes = L.geoJSON(null, {
     }
 });
 
-irrigationSchemes.addTo(map);
+// irrigationSchemes.addTo(map);
 
 // Villages
 var villageIcon = L.divIcon({
@@ -238,7 +239,7 @@ var villages = L.geoJSON(null, {
     }
 });
 
-villages.addTo(map);
+// villages.addTo(map);
 
 // trading centres
 var tradingCentreIcon = L.divIcon({
@@ -256,7 +257,7 @@ var tradingCentres = L.geoJSON(null, {
     }
 });
 
-tradingCentres.addTo(map);
+// tradingCentres.addTo(map);
 
 // waterpoints
 var waterPointIcon = L.divIcon({
@@ -275,7 +276,7 @@ var waterPoints = L.geoJSON(null, {
     }
 });
 
-waterPoints.addTo(map);
+// waterPoints.addTo(map);
 
 // settlement schemes
 var settlementSchemeIcon = L.divIcon({
@@ -293,7 +294,7 @@ var settlementSchemes = L.geoJSON(null, {
     }
 });
 
-settlementSchemes.addTo(map);
+// settlementSchemes.addTo(map);
 
 // camps
 var campIcon = L.icon({

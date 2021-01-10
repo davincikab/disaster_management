@@ -13,6 +13,11 @@
     margin: 0.25rem 0;
 }
 
+.btn {
+    background-color: darkcyan !important;
+    color: white;
+}
+
 .modal-dialog {
     display: flex;
     align-items: center;

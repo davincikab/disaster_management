@@ -177,7 +177,7 @@ affectedFeatureForm.on("submit", function(e) {
 // map reset Control
 var ResetControl = new L.Control({position:'bottomleft'});
 ResetControl.onAdd = function(map) {
-    let div = L.DomUtil.create('button', 'btn');
+    let div = L.DomUtil.create('button', 'btn text-white');
     div.setAttribute('id', 'reset-button');
     div.innerHTML = "Reset";
 
