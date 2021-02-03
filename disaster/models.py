@@ -334,7 +334,7 @@ class UserLocation(models.Model):
         verbose_name_plural = "UserLocations"
 
     def __str__(self):
-        return self.name
+        return self.first_name
 
     # def get_absolute_url(self):
     #     return reverse("UserLocation_detail", kwargs={"pk": self.pk})

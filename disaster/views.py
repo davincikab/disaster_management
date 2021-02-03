@@ -117,9 +117,20 @@ def report_user_location(request):
         geom = request.POST.get('geom')
         user_location = form.save(commit=False)
         user_location.geom = GEOSGeometry(f'POINT ({geom})')
-        return JsonResponse({'message':"success"})
+
+        user_location.save()
+        return HttpResponse(json.dumps({'message':"success"}))
     else:
-        JsonResponse({'message':"error"})
+        HttpResponse(json.dumps({'message':"error"}))
+
+# serialize reported location
+def reported_location(request):
+    return render(request, 'disaster/reported_location.html')
+
+def get_reported_location(request):
+    distress_locations = serialize('geojson', UserLocation.objects.all())
+    return HttpResponse(json.dumps({'location':distress_locations}))
+
 
 def get_affected_households(request):
     # 

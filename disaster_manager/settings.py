@@ -26,6 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+
+    # third party application
+    'leaflet',
+    
+    # local app
     'disaster',
     'user'
 ]
@@ -73,7 +78,6 @@ DATABASES = {
         'USER':'postgres',
         'PASSWORD':'postgres'
     }
-
 }
 
 
@@ -123,5 +127,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
-GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal204'
+# GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal20'
 GEOS_LIBRARY_PATH = 'C:/Program Files/PostgreSQL/12/bin/libgeos_c'
