@@ -29,7 +29,7 @@ INSTALLED_APPS = [
 
     # third party application
     'leaflet',
-    
+
     # local app
     'disaster',
     'user'
@@ -116,6 +116,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+LOGIN_URL = "/user/login"
 
 LOGIN_REDIRECT_URL = "/camps/"
 LOGOUT_REDIRECT_URL = "/"

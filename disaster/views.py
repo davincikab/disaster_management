@@ -124,6 +124,7 @@ def report_user_location(request):
         HttpResponse(json.dumps({'message':"error"}))
 
 # serialize reported location
+@login_required
 def reported_location(request):
     return render(request, 'disaster/reported_location.html')
 
