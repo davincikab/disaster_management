@@ -25,8 +25,16 @@ function findAffectedInfrastucture(features, featureType) {
             map.fitBounds(affectedFeatures.getBounds());
         }
 
-        let affectedFeaturesString = data.features.length + " " + featureType + " affected by floods"
-        $("#feature-description").text(affectedFeaturesString);
+        let newFeatures = features.toGeoJSON();
+        let percentageAffected = (data.features.length * 100 / newFeatures.features.length).toFixed(1);
+
+        let affectedFeaturesString = "<p>" + data.features.length + " ("+ percentageAffected +"%) " + featureType + " were affected by floods</p>";
+        $("#feature-description").html(affectedFeaturesString);
+
+
+        // create the div
+        updateDescriptionSection(percentageAffected);
+
 
         setTimeout(function(e){
             spinner.addClass("d-none");
@@ -40,6 +48,16 @@ function findAffectedInfrastucture(features, featureType) {
             spinner.addClass("d-none");
         }, 100);
     });
+}
+
+function updateDescriptionSection(percentageAffected) {
+    let div = document.createElement('div');
+    div.classList.add("py-2");
+    div.style.border = "1px solid gray";
+    div.style.backgroundImage = "linear-gradient(90deg, #A23E22 0% "+ percentageAffected +"%, #fff "+ percentageAffected +"%)";
+
+    $("#feature-description").append(div);
+    $("#feature-description").append("<p class='text-center'>"+ percentageAffected + "%</p>");
 }
 
 function getAffectedArea(feature) {
@@ -58,8 +76,13 @@ function getAffectedArea(feature) {
 
         // update the text
         area = area / 1000;
-        let affectedFeaturesString = Math.floor(area) + " km2 of Cropland affected by floods";
+        let percentageAffected = Math.floor(turf.area(response) * 100 / turf.area(cropLand.toGeoJSON()));
+
+        let affectedFeaturesString = Math.floor(area) + " km2 ("+ percentageAffected +"%) of Cropland affected by floods";
         $("#feature-description").text(affectedFeaturesString);
+
+        // update description sections
+        updateDescriptionSection(percentageAffected);
 
         // hide spinner
         setTimeout(function(e){
@@ -100,12 +123,18 @@ function getAffectedHouseHolds() {
         affectedHouseHolds.setLatLngs(pnts).addTo(map);
 
         // stats
+        let percentageAffected = (pnts.length * 100 / 246995).toFixed(1);
         let people = Math.floor(pnts.length * 4.5);
         let youth = Math.floor(people * 0.33);
+        let percentageYouth = Math.floor(youth * 100 / people).toFixed(1);
 
-        let affectedFeaturesString = people + " people affected by floods." + youth + " individuals are 18 years and below";
+        let affectedFeaturesString = "<p>"+ people + " (" + percentageAffected + "%) of the people were affected by floods.<br>" + youth + " (" + percentageYouth + "%) of affected individuals are 18 years and below</br>";
 
-        $("#feature-description").text(affectedFeaturesString);
+        $("#feature-description").append(affectedFeaturesString);
+
+         // update description sections
+         
+         updateDescriptionSection(percentageAffected);
 
         // hide spinner
         setTimeout(function(e){
